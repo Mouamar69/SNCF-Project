@@ -1,4 +1,4 @@
-#  Assistant Week-end Bas Carbone — SNCF Hackathon
+#  Assistant Week-end Bas Carbone SNCF Hackathon
 
 ---
 

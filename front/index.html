@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr" ng-app="sncfApp">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SNCF — Week-end Bas Carbone</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-controller="MainCtrl">
+
+  <header>
+    <div class="header-left">
+      <div class="logo">🚆 SNCF</div>
+      <div class="header-titles">
+        <div class="header-title">Assistant Week-end Bas Carbone</div>
+        <div class="header-sub">Partez en train, respectez la planète</div>
+      </div>
+    </div>
+    <div class="co2-badge-header">
+      <span>🌿 Train = 50× moins de CO₂ que la voiture</span>
+    </div>
+  </header>
+
+  <!-- Panneau de recherche -->
+  <section class="search-panel">
+    <div class="search-row">
+
+      <div class="search-field">
+        <label>Ville de départ</label>
+        <select ng-model="from" ng-options="c for c in cities">
+        </select>
+      </div>
+
+      <div class="search-field">
+        <label>Budget CO₂ max : <strong>{{ formatCo2(co2Max) }} kg</strong></label>
+        <div class="slider-row">
+          <span class="slider-min">0,1</span>
+          <input type="range" ng-model="co2Max" min="0.1" max="3.0" step="0.1" class="slider" />
+          <span class="slider-max">3,0 kg</span>
+        </div>
+        <div class="co2-scale">
+          <span style="color:#27ae60">● Très faible</span>
+          <span style="color:#f39c12">● Modéré</span>
+          <span style="color:#e74c3c">● Élevé</span>
+        </div>
+      </div>
+
+      <div class="search-field">
+        <label>Durée max : <strong>{{ formatHoursMax(hoursMax) }}</strong></label>
+        <div class="slider-row">
+          <span class="slider-min">1h</span>
+          <input type="range" ng-model="hoursMax" min="1" max="8" step="0.5" class="slider" />
+          <span class="slider-max">8h</span>
+        </div>
+      </div>
+
+      <div class="search-field search-btn-field">
+        <button ng-click="search()" ng-disabled="loading" class="btn-search">
+          <span ng-if="!loading">🔍 Trouver des destinations</span>
+          <span ng-if="loading">Recherche...</span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Message erreur -->
+  <div class="error-msg" ng-if="errorMsg">{{ errorMsg }}</div>
+
+  <!-- Zone résultats -->
+  <div class="results-layout" ng-show="searched">
+
+    <!-- Carte Leaflet -->
+    <div class="map-wrapper">
+      <div id="map"></div>
+      <div class="map-legend">
+        <div class="legend-title">Empreinte CO₂</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#27ae60"></span> &lt; 0,3 kg</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#2ecc71"></span> 0,3–0,6 kg</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#f39c12"></span> 0,6–1,0 kg</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#e67e22"></span> 1,0–1,5 kg</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#e74c3c"></span> &gt; 1,5 kg</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#c8102e"></span> Départ</div>
+      </div>
+    </div>
+
+    <!-- Sidebar destinations -->
+    <div class="dest-sidebar">
+
+      <div class="sidebar-header" ng-if="!loading">
+        <span ng-if="destinations.length > 0">
+          <strong>{{ destinations.length }}</strong> destination(s) depuis <strong>{{ from }}</strong>
+        </span>
+        <span ng-if="destinations.length === 0 && searched && !errorMsg">Aucun résultat</span>
+        <div class="ai-explanation" ng-if="aiExplanation">
+          <span class="ai-explanation-badge">✨ IA</span> {{ aiExplanation }}
+        </div>
+      </div>
+
+      <div class="loading-spinner" ng-if="loading">
+        <div class="spinner"></div>
+        <span>Recherche en cours...</span>
+      </div>
+
+      <div class="dest-cards" ng-if="!loading">
+        <div
+          class="dest-card"
+          id="card-{{ dest.id }}"
+          ng-repeat="dest in destinations"
+          ng-click="selectCard(dest)"
+          ng-class="{ 'active': selectedDest && selectedDest.id === dest.id }"
+        >
+          <div class="dest-card-top">
+            <div class="dest-name">{{ dest.name }}</div>
+            <div class="dest-co2-badge" ng-style="{ background: co2Color(dest.co2) + '22', color: co2Color(dest.co2), borderColor: co2Color(dest.co2) }">
+              🌿 {{ dest.co2 | number:2 }} kg CO₂
+            </div>
+          </div>
+
+          <div class="dest-meta">
+            <span class="dest-meta-item">🕐 {{ formatDuration(dest.duration) }}</span>
+            <span class="dest-meta-item">📏 {{ dest.distance }} km</span>
+            <span class="dest-meta-item dest-co2-label" ng-style="{ color: co2Color(dest.co2) }">{{ co2Label(dest.co2) }}</span>
+          </div>
+
+          <!-- AI narrative (lazy loaded on card click) -->
+          <div ng-if="selectedDest && selectedDest.id === dest.id">
+            <div class="ai-narrative-loading" ng-if="aiLoading[dest.id]">
+              <span class="ai-spinner"></span> Génération en cours...
+            </div>
+            <div class="ai-narrative" ng-if="aiNarrative[dest.id]">
+              <span class="ai-narrative-badge">✨ IA</span>
+              <p class="ai-narrative-text">{{ aiNarrative[dest.id] }}</p>
+            </div>
+            <p class="dest-desc" ng-if="!aiNarrative[dest.id] && !aiLoading[dest.id]">{{ dest.description }}</p>
+          </div>
+          <p class="dest-desc" ng-if="!selectedDest || selectedDest.id !== dest.id">{{ dest.description }}</p>
+
+          <div class="dest-pois">
+            <div class="dest-poi" ng-repeat="p in dest.poi">
+              <span class="poi-icon">{{ p.icon }}</span>
+              <span class="poi-name">{{ p.name }}</span>
+              <span class="poi-dist">{{ p.dist }}</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="no-results" ng-if="destinations.length === 0 && !errorMsg && searched">
+          <div class="no-results-icon">🌍</div>
+          <p>Aucune destination ne correspond à ces critères.</p>
+          <p>Essayez d'augmenter le budget CO₂ ou la durée de trajet.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Call to action avant recherche -->
+  <div class="landing-cta" ng-if="!searched">
+    <div class="cta-icon">🌿</div>
+    <h2>Découvrez où aller ce week-end</h2>
+    <p>Entrez votre ville de départ, choisissez votre budget carbone et trouvez des destinations accessibles à pied ou à vélo depuis la gare.</p>
+    <button ng-click="search()" class="btn-search btn-big">Lancer la recherche</button>
+  </div>
+
+  <!-- Chatbot flottant -->
+  <button class="chat-fab" ng-click="toggleChat()" ng-class="{'chat-fab-open': chatOpen}" title="Assistant IA">
+    <span ng-if="!chatOpen">💬</span>
+    <span ng-if="chatOpen">✕</span>
+  </button>
+
+  <div class="chat-panel" ng-show="chatOpen">
+    <div class="chat-header">
+      <div class="chat-header-title">
+        <span class="chat-header-icon">✨</span>
+        <div>
+          <div class="chat-header-name">Assistant IA SNCF</div>
+          <div class="chat-header-sub">Décrivez votre week-end idéal</div>
+        </div>
+      </div>
+      <button class="chat-close-btn" ng-click="toggleChat()">✕</button>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+      <div
+        ng-repeat="msg in chatMessages track by $index"
+        class="chat-msg"
+        ng-class="{'chat-msg-user': msg.role === 'user'}"
+      >
+        <div class="chat-bubble">{{ msg.content }}</div>
+      </div>
+      <div class="chat-msg" ng-if="chatLoading">
+        <div class="chat-bubble chat-bubble-typing">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-row">
+      <input
+        type="text"
+        ng-model="chatInput"
+        placeholder="Ex : je veux de la randonnée au bord de la mer..."
+        class="chat-input"
+        ng-keydown="$event.keyCode === 13 && sendChat()"
+        ng-disabled="chatLoading"
+        id="chat-input-field"
+      />
+      <button
+        class="chat-send-btn"
+        ng-click="sendChat()"
+        ng-disabled="chatLoading || !chatInput.trim()"
+      >➤</button>
+    </div>
+  </div>
+
+</body>
+</html>

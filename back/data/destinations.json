@@ -1,0 +1,672 @@
+{
+  "cities": {
+    "Paris":     { "lat": 48.8566, "lng": 2.3522 },
+    "Lyon":      { "lat": 45.7640, "lng": 4.8357 },
+    "Bordeaux":  { "lat": 44.8378, "lng": -0.5792 },
+    "Lille":     { "lat": 50.6292, "lng": 3.0573 },
+    "Marseille": { "lat": 43.2965, "lng": 5.3698 },
+    "Nantes":    { "lat": 47.2184, "lng": -1.5536 }
+  },
+  "destinations": {
+    "Paris": [
+      {
+        "id": "reims",
+        "name": "Reims",
+        "lat": 49.2583, "lng": 4.0317,
+        "duration": 45, "co2": 0.35, "distance": 145,
+        "description": "La cité des sacres révèle sa cathédrale gothique et ses caves de Champagne à quelques pas de la gare.",
+        "poi": [
+          { "name": "Cathédrale Notre-Dame", "type": "culture", "icon": "🏛️", "dist": "10 min à pied" },
+          { "name": "Caves de Champagne Taittinger", "type": "gastronomie", "icon": "🍾", "dist": "20 min à pied" },
+          { "name": "Parc de Champagne", "type": "nature", "icon": "🌿", "dist": "15 min à vélo" }
+        ]
+      },
+      {
+        "id": "orleans",
+        "name": "Orléans",
+        "lat": 47.9029, "lng": 1.9093,
+        "duration": 65, "co2": 0.31, "distance": 130,
+        "description": "Sur les bords de Loire, Orléans offre un centre médiéval et des voies cyclables longeant le fleuve.",
+        "poi": [
+          { "name": "Cathédrale Sainte-Croix", "type": "culture", "icon": "⛪", "dist": "8 min à pied" },
+          { "name": "Loire à vélo (voie cyclable)", "type": "sport", "icon": "🚴", "dist": "5 min à pied" },
+          { "name": "Parc Pasteur", "type": "nature", "icon": "🌳", "dist": "12 min à pied" }
+        ]
+      },
+      {
+        "id": "le-mans",
+        "name": "Le Mans",
+        "lat": 48.0061, "lng": 0.1996,
+        "duration": 55, "co2": 0.50, "distance": 210,
+        "description": "La vieille ville médiévale du Mans, la Cité Plantagenêt, se découvre entièrement à pied depuis la gare.",
+        "poi": [
+          { "name": "Cité Plantagenêt (remparts romains)", "type": "culture", "icon": "🏰", "dist": "15 min à pied" },
+          { "name": "Cathédrale Saint-Julien", "type": "culture", "icon": "⛪", "dist": "20 min à pied" },
+          { "name": "Forêt de Bercé (navette)", "type": "nature", "icon": "🌲", "dist": "30 min en navette" }
+        ]
+      },
+      {
+        "id": "tours",
+        "name": "Tours",
+        "lat": 47.3941, "lng": 0.6848,
+        "duration": 65, "co2": 0.59, "distance": 245,
+        "description": "Porte d'entrée des châteaux de la Loire, Tours propose la Loire à vélo et un vieux quartier animé.",
+        "poi": [
+          { "name": "Loire à vélo — tronçon Tours-Amboise", "type": "sport", "icon": "🚴", "dist": "5 min à pied" },
+          { "name": "Vieux Tours (place Plumereau)", "type": "culture", "icon": "🏡", "dist": "10 min à pied" },
+          { "name": "Château d'Amboise (vélo ~20km)", "type": "culture", "icon": "🏰", "dist": "1h à vélo" }
+        ]
+      },
+      {
+        "id": "angers",
+        "name": "Angers",
+        "lat": 47.4784, "lng": -0.5632,
+        "duration": 95, "co2": 0.72, "distance": 300,
+        "description": "Entre château médiéval et jardins remarquables, Angers est une ville compacte et agréable à parcourir à pied.",
+        "poi": [
+          { "name": "Château d'Angers (Tapisserie de l'Apocalypse)", "type": "culture", "icon": "🏰", "dist": "15 min à pied" },
+          { "name": "Jardin des Plantes", "type": "nature", "icon": "🌸", "dist": "10 min à pied" },
+          { "name": "Loire à vélo depuis Angers", "type": "sport", "icon": "🚴", "dist": "5 min à pied" }
+        ]
+      },
+      {
+        "id": "rennes",
+        "name": "Rennes",
+        "lat": 48.1173, "lng": -1.6778,
+        "duration": 85, "co2": 0.92, "distance": 385,
+        "description": "Rennes conjugue centre historique à colombages, parcs verdoyants et gastronomie bretonne accessibles à pied.",
+        "poi": [
+          { "name": "Parc du Thabor", "type": "nature", "icon": "🌳", "dist": "20 min à pied" },
+          { "name": "Centre médiéval et parlement de Bretagne", "type": "culture", "icon": "🏛️", "dist": "10 min à pied" },
+          { "name": "Marché des Lices (samedi matin)", "type": "gastronomie", "icon": "🥐", "dist": "12 min à pied" }
+        ]
+      },
+      {
+        "id": "lille",
+        "name": "Lille",
+        "lat": 50.6292, "lng": 3.0573,
+        "duration": 60, "co2": 0.54, "distance": 225,
+        "description": "Le Vieux-Lille est un concentré d'architecture flamande, de restaurants et de petites rues pavées explorables à pied.",
+        "poi": [
+          { "name": "Vieux-Lille (rue de la Monnaie)", "type": "culture", "icon": "🏘️", "dist": "15 min à pied" },
+          { "name": "Citadelle de Lille et bois", "type": "nature", "icon": "🌲", "dist": "20 min à vélo" },
+          { "name": "Palais des Beaux-Arts", "type": "culture", "icon": "🎨", "dist": "10 min à pied" }
+        ]
+      },
+      {
+        "id": "dijon",
+        "name": "Dijon",
+        "lat": 47.3220, "lng": 5.0415,
+        "duration": 100, "co2": 0.76, "distance": 315,
+        "description": "Capitale de la Bourgogne, Dijon offre un centre historique dense et des balades vigneronnes à vélo.",
+        "poi": [
+          { "name": "Palais des Ducs de Bourgogne", "type": "culture", "icon": "🏛️", "dist": "10 min à pied" },
+          { "name": "Route des Grands Crus (vélo)", "type": "sport", "icon": "🚴", "dist": "20 min à vélo" },
+          { "name": "Marché couvert de Dijon", "type": "gastronomie", "icon": "🧀", "dist": "5 min à pied" }
+        ]
+      },
+      {
+        "id": "strasbourg",
+        "name": "Strasbourg",
+        "lat": 48.5734, "lng": 7.7521,
+        "duration": 135, "co2": 1.08, "distance": 450,
+        "description": "Strasbourg possède le meilleur réseau cyclable de France ; la Petite France et ses canaux sont à 10 min de la gare.",
+        "poi": [
+          { "name": "La Petite France (quartier de canaux)", "type": "culture", "icon": "🌊", "dist": "10 min à pied" },
+          { "name": "Piste cyclable EuroVélo 5", "type": "sport", "icon": "🚴", "dist": "5 min à pied" },
+          { "name": "Cathédrale de Strasbourg", "type": "culture", "icon": "⛪", "dist": "10 min à pied" }
+        ]
+      },
+      {
+        "id": "nantes",
+        "name": "Nantes",
+        "lat": 47.2184, "lng": -1.5536,
+        "duration": 130, "co2": 0.94, "distance": 390,
+        "description": "Nantes se révèle à vélo le long des bords de Loire et dans ses quartiers créatifs.",
+        "poi": [
+          { "name": "Machines de l'île (éléphant géant)", "type": "culture", "icon": "🐘", "dist": "20 min à vélo" },
+          { "name": "Bords de Loire à vélo", "type": "sport", "icon": "🚴", "dist": "10 min à pied" },
+          { "name": "Château des Ducs de Bretagne", "type": "culture", "icon": "🏰", "dist": "15 min à pied" }
+        ]
+      },
+      {
+        "id": "bordeaux",
+        "name": "Bordeaux",
+        "lat": 44.8378, "lng": -0.5792,
+        "duration": 130, "co2": 1.40, "distance": 585,
+        "description": "Bordeaux, ville UNESCO, s'explore à pied ou à vélo le long de la Garonne avec la cité du vin.",
+        "poi": [
+          { "name": "Cité du Vin", "type": "culture", "icon": "🍷", "dist": "25 min à vélo" },
+          { "name": "Bords de Garonne (vélo)", "type": "sport", "icon": "🚴", "dist": "10 min à pied" },
+          { "name": "Place de la Bourse & Miroir d'eau", "type": "culture", "icon": "🏛️", "dist": "15 min à pied" }
+        ]
+      },
+      {
+        "id": "lyon",
+        "name": "Lyon",
+        "lat": 45.7640, "lng": 4.8357,
+        "duration": 125, "co2": 1.12, "distance": 465,
+        "description": "Capitale gastronomique, Lyon s'explore entre Vieux Lyon, Croix-Rousse et les berges du Rhône à vélo.",
+        "poi": [
+          { "name": "Vieux Lyon (site UNESCO)", "type": "culture", "icon": "🏘️", "dist": "20 min à pied" },
+          { "name": "Parc de la Tête d'Or", "type": "nature", "icon": "🌿", "dist": "30 min à vélo" },
+          { "name": "Berges du Rhône (piste cyclable)", "type": "sport", "icon": "🚴", "dist": "15 min à pied" }
+        ]
+      },
+      {
+        "id": "marseille",
+        "name": "Marseille",
+        "lat": 43.2965, "lng": 5.3698,
+        "duration": 185, "co2": 1.81, "distance": 755,
+        "description": "Le Vieux-Port, les calanques et la Corniche, tout se rejoint à pied ou en bus depuis la gare Saint-Charles.",
+        "poi": [
+          { "name": "Vieux-Port et marché au poisson", "type": "gastronomie", "icon": "🐟", "dist": "15 min à pied" },
+          { "name": "Calanques (navette bateau)", "type": "nature", "icon": "🏖️", "dist": "30 min en bus" },
+          { "name": "MuCEM (musée des civilisations)", "type": "culture", "icon": "🏛️", "dist": "20 min à pied" }
+        ]
+      }
+    ],
+    "Lyon": [
+      {
+        "id": "vienne",
+        "name": "Vienne",
+        "lat": 45.5246, "lng": 4.8746,
+        "duration": 20, "co2": 0.07, "distance": 30,
+        "description": "À 20 minutes, Vienne déroule ses ruines romaines et son théâtre antique en plein air depuis la gare.",
+        "poi": [
+          { "name": "Temple d'Auguste et Livie", "type": "culture", "icon": "🏛️", "dist": "5 min à pied" },
+          { "name": "Théâtre antique de Vienne", "type": "culture", "icon": "🎭", "dist": "10 min à pied" },
+          { "name": "Bords du Rhône à vélo", "type": "sport", "icon": "🚴", "dist": "5 min à pied" }
+        ]
+      },
+      {
+        "id": "bourg-en-bresse",
+        "name": "Bourg-en-Bresse",
+        "lat": 46.2050, "lng": 5.2270,
+        "duration": 40, "co2": 0.18, "distance": 75,
+        "description": "Bourg-en-Bresse, capitale de la poulet AOP, avec son monastère royal de Brou, est un week-end gastronomique et culturel.",
+        "poi": [
+          { "name": "Monastère royal de Brou", "type": "culture", "icon": "⛪", "dist": "25 min à pied" },
+          { "name": "Marché couvert (place Carriat)", "type": "gastronomie", "icon": "🍗", "dist": "10 min à pied" },
+          { "name": "Parc de loisirs de Bouvent", "type": "nature", "icon": "🌲", "dist": "20 min à vélo" }
+        ]
+      },
+      {
+        "id": "grenoble",
+        "name": "Grenoble",
+        "lat": 45.1885, "lng": 5.7245,
+        "duration": 75, "co2": 0.25, "distance": 105,
+        "description": "Entourée de massifs, Grenoble est paradis du vélo urbain avec 700km de pistes et des remontées à pied.",
+        "poi": [
+          { "name": "Bastille (téléphérique)", "type": "nature", "icon": "⛰️", "dist": "15 min à pied" },
+          { "name": "Réseau vélos Métrovélo", "type": "sport", "icon": "🚴", "dist": "0 min (gare)" },
+          { "name": "Musée de Grenoble (art moderne)", "type": "culture", "icon": "🎨", "dist": "15 min à pied" }
+        ]
+      },
+      {
+        "id": "chambery",
+        "name": "Chambéry",
+        "lat": 45.5646, "lng": 5.9178,
+        "duration": 60, "co2": 0.24, "distance": 100,
+        "description": "Ancienne capitale des Ducs de Savoie, Chambéry est compacte et entourée de lacs et montagnes à vélo.",
+        "poi": [
+          { "name": "Fontaine des Éléphants", "type": "culture", "icon": "🐘", "dist": "8 min à pied" },
+          { "name": "Lac du Bourget (vélo ~15km)", "type": "nature", "icon": "🏞️", "dist": "45 min à vélo" },
+          { "name": "Château des Ducs de Savoie", "type": "culture", "icon": "🏰", "dist": "10 min à pied" }
+        ]
+      },
+      {
+        "id": "annecy",
+        "name": "Annecy",
+        "lat": 45.8992, "lng": 6.1294,
+        "duration": 105, "co2": 0.34, "distance": 140,
+        "description": "Le lac d'Annecy et ses pistes cyclables autour de l'eau turquoise constituent l'un des plus beaux week-ends de France.",
+        "poi": [
+          { "name": "Piste cyclable tour du lac (41km)", "type": "sport", "icon": "🚴", "dist": "5 min à pied" },
+          { "name": "Vieille ville et canaux", "type": "culture", "icon": "🏡", "dist": "10 min à pied" },
+          { "name": "Jardins de l'Europe", "type": "nature", "icon": "🌸", "dist": "10 min à pied" }
+        ]
+      },
+      {
+        "id": "valence",
+        "name": "Valence",
+        "lat": 44.9334, "lng": 4.8924,
+        "duration": 40, "co2": 0.24, "distance": 100,
+        "description": "Valence, porte de la Drôme provençale, propose des parcs et la Via Rhôna cyclable le long du fleuve.",
+        "poi": [
+          { "name": "Via Rhôna (piste cyclable Rhône)", "type": "sport", "icon": "🚴", "dist": "10 min à pied" },
+          { "name": "Parc Jouvet", "type": "nature", "icon": "🌳", "dist": "15 min à pied" },
+          { "name": "Kiosque Peynet et vieille ville", "type": "culture", "icon": "🏛️", "dist": "8 min à pied" }
+        ]
+      },
+      {
+        "id": "avignon",
+        "name": "Avignon",
+        "lat": 43.9493, "lng": 4.8055,
+        "duration": 40, "co2": 0.54, "distance": 225,
+        "description": "Avignon, cité des papes, s'explore entièrement à pied à l'intérieur de ses remparts médiévaux.",
+        "poi": [
+          { "name": "Palais des Papes (site UNESCO)", "type": "culture", "icon": "🏰", "dist": "15 min à pied" },
+          { "name": "Pont Saint-Bénézet", "type": "culture", "icon": "🌉", "dist": "18 min à pied" },
+          { "name": "Rocher des Doms (jardins)", "type": "nature", "icon": "🌿", "dist": "15 min à pied" }
+        ]
+      },
+      {
+        "id": "dijon",
+        "name": "Dijon",
+        "lat": 47.3220, "lng": 5.0415,
+        "duration": 75, "co2": 0.48, "distance": 200,
+        "description": "Capitale de la Bourgogne, Dijon offre un centre historique dense et des balades vigneronnes à vélo.",
+        "poi": [
+          { "name": "Palais des Ducs de Bourgogne", "type": "culture", "icon": "🏛️", "dist": "10 min à pied" },
+          { "name": "Route des Grands Crus (vélo)", "type": "sport", "icon": "🚴", "dist": "20 min à vélo" },
+          { "name": "Marché couvert de Dijon", "type": "gastronomie", "icon": "🧀", "dist": "5 min à pied" }
+        ]
+      },
+      {
+        "id": "clermont-ferrand",
+        "name": "Clermont-Ferrand",
+        "lat": 45.7772, "lng": 3.0870,
+        "duration": 90, "co2": 0.35, "distance": 145,
+        "description": "Aux pieds des volcans d'Auvergne, Clermont propose des randonnées et des paysages uniques accessibles en navette.",
+        "poi": [
+          { "name": "Puy de Dôme (crémaillère)", "type": "nature", "icon": "🌋", "dist": "40 min en navette" },
+          { "name": "Cathédrale Notre-Dame (pierre noire)", "type": "culture", "icon": "⛪", "dist": "10 min à pied" },
+          { "name": "Vieux Montferrand", "type": "culture", "icon": "🏘️", "dist": "20 min à vélo" }
+        ]
+      },
+      {
+        "id": "marseille",
+        "name": "Marseille",
+        "lat": 43.2965, "lng": 5.3698,
+        "duration": 100, "co2": 0.76, "distance": 315,
+        "description": "Le Vieux-Port, les calanques et la Corniche, tout se rejoint à pied ou en bus depuis la gare Saint-Charles.",
+        "poi": [
+          { "name": "Vieux-Port et marché au poisson", "type": "gastronomie", "icon": "🐟", "dist": "15 min à pied" },
+          { "name": "Calanques (navette bateau)", "type": "nature", "icon": "🏖️", "dist": "30 min en bus" },
+          { "name": "MuCEM (musée des civilisations)", "type": "culture", "icon": "🏛️", "dist": "20 min à pied" }
+        ]
+      }
+    ],
+    "Bordeaux": [
+      {
+        "id": "libourne",
+        "name": "Libourne",
+        "lat": 44.9139, "lng": -0.2431,
+        "duration": 30, "co2": 0.08, "distance": 35,
+        "description": "Porte d'entrée de Saint-Émilion, Libourne se parcourt à vélo dans les vignobles classés UNESCO.",
+        "poi": [
+          { "name": "Saint-Émilion (vélo ~8km)", "type": "culture", "icon": "🍷", "dist": "25 min à vélo" },
+          { "name": "Confluent Dordogne-Isle", "type": "nature", "icon": "🌊", "dist": "10 min à pied" },
+          { "name": "Place Abel Surchamp", "type": "culture", "icon": "🏛️", "dist": "5 min à pied" }
+        ]
+      },
+      {
+        "id": "arcachon",
+        "name": "Arcachon",
+        "lat": 44.6527, "lng": -1.1690,
+        "duration": 55, "co2": 0.13, "distance": 55,
+        "description": "Dune du Pilat, bassin et plages sont accessibles à vélo depuis la gare d'Arcachon.",
+        "poi": [
+          { "name": "Dune du Pilat (la plus grande d'Europe)", "type": "nature", "icon": "🏜️", "dist": "20 min à vélo" },
+          { "name": "Piste cyclable tour du bassin", "type": "sport", "icon": "🚴", "dist": "5 min à pied" },
+          { "name": "Ville d'hiver (villas Belle Époque)", "type": "culture", "icon": "🏡", "dist": "15 min à pied" }
+        ]
+      },
+      {
+        "id": "perigueux",
+        "name": "Périgueux",
+        "lat": 45.1847, "lng": 0.7218,
+        "duration": 80, "co2": 0.22, "distance": 90,
+        "description": "Périgueux, cœur du Périgord, propose un centre romain et médiéval compact, idéal à pied.",
+        "poi": [
+          { "name": "Cathédrale Saint-Front", "type": "culture", "icon": "⛪", "dist": "10 min à pied" },
+          { "name": "Vieux quartier de la Cité", "type": "culture", "icon": "🏘️", "dist": "12 min à pied" },
+          { "name": "Bords de l'Isle (promenade)", "type": "nature", "icon": "🌿", "dist": "8 min à pied" }
+        ]
+      },
+      {
+        "id": "angouleme",
+        "name": "Angoulême",
+        "lat": 45.6498, "lng": 0.1562,
+        "duration": 50, "co2": 0.28, "distance": 115,
+        "description": "Angoulême, capitale de la BD, possède des remparts panoramiques et une Charente accessible à vélo.",
+        "poi": [
+          { "name": "Cité internationale de la BD", "type": "culture", "icon": "💬", "dist": "15 min à pied" },
+          { "name": "Remparts et promenade Beaulieu", "type": "nature", "icon": "🌳", "dist": "10 min à pied" },
+          { "name": "Charente à vélo (voie verte)", "type": "sport", "icon": "🚴", "dist": "10 min à vélo" }
+        ]
+      },
+      {
+        "id": "bayonne",
+        "name": "Bayonne",
+        "lat": 43.4929, "lng": -1.4748,
+        "duration": 65, "co2": 0.44, "distance": 185,
+        "description": "Entre Pays Basque et Landes, Bayonne et ses chocolatiers s'explorent à pied dans la vieille ville.",
+        "poi": [
+          { "name": "Vieux Bayonne (maisons colorées)", "type": "culture", "icon": "🏘️", "dist": "10 min à pied" },
+          { "name": "Chocolatiers de Bayonne", "type": "gastronomie", "icon": "🍫", "dist": "12 min à pied" },
+          { "name": "Piste cyclable Biarritz (7km)", "type": "sport", "icon": "🚴", "dist": "5 min à pied" }
+        ]
+      },
+      {
+        "id": "la-rochelle",
+        "name": "La Rochelle",
+        "lat": 46.1591, "lng": -1.1520,
+        "duration": 120, "co2": 0.47, "distance": 195,
+        "description": "La Rochelle, pionnière du vélo en libre-service, s'explore à vélo entre son port médiéval et les plages.",
+        "poi": [
+          { "name": "Vieux-Port et tours médiévales", "type": "culture", "icon": "🏰", "dist": "15 min à pied" },
+          { "name": "Vélos Yélo (réseau cyclable 80km)", "type": "sport", "icon": "🚴", "dist": "0 min (partout)" },
+          { "name": "Île de Ré (vélo depuis le pont)", "type": "nature", "icon": "🏝️", "dist": "30 min à vélo" }
+        ]
+      },
+      {
+        "id": "toulouse",
+        "name": "Toulouse",
+        "lat": 43.6047, "lng": 1.4442,
+        "duration": 130, "co2": 0.58, "distance": 240,
+        "description": "La Ville Rose et ses briques s'explorent à pied ou à vélo le long du Canal du Midi.",
+        "poi": [
+          { "name": "Canal du Midi (vélo)", "type": "sport", "icon": "🚴", "dist": "15 min à vélo" },
+          { "name": "Capitole et centre historique", "type": "culture", "icon": "🏛️", "dist": "10 min à pied" },
+          { "name": "Prairie des filtres (bords de Garonne)", "type": "nature", "icon": "🌿", "dist": "20 min à pied" }
+        ]
+      },
+      {
+        "id": "poitiers",
+        "name": "Poitiers",
+        "lat": 46.5802, "lng": 0.3404,
+        "duration": 90, "co2": 0.60, "distance": 250,
+        "description": "Poitiers, l'une des plus anciennes villes de France, concentre ses monuments romans dans un centre piéton.",
+        "poi": [
+          { "name": "Baptistère Saint-Jean (IVe s.)", "type": "culture", "icon": "🏛️", "dist": "10 min à pied" },
+          { "name": "Église Notre-Dame-la-Grande", "type": "culture", "icon": "⛪", "dist": "8 min à pied" },
+          { "name": "Parc de Blossac", "type": "nature", "icon": "🌳", "dist": "15 min à pied" }
+        ]
+      }
+    ],
+    "Lille": [
+      {
+        "id": "arras",
+        "name": "Arras",
+        "lat": 50.2912, "lng": 2.7793,
+        "duration": 30, "co2": 0.13, "distance": 55,
+        "description": "Arras et ses deux grandes places baroques flamandes sont parmi les plus belles d'Europe, à 10 min à pied.",
+        "poi": [
+          { "name": "Grand-Place et Place des Héros", "type": "culture", "icon": "🏘️", "dist": "10 min à pied" },
+          { "name": "Beffroi (patrimoine UNESCO)", "type": "culture", "icon": "🏰", "dist": "12 min à pied" },
+          { "name": "Carrière Wellington (souterrains WWI)", "type": "culture", "icon": "⚔️", "dist": "15 min à pied" }
+        ]
+      },
+      {
+        "id": "lens",
+        "name": "Lens",
+        "lat": 50.4320, "lng": 2.8307,
+        "duration": 25, "co2": 0.08, "distance": 35,
+        "description": "Lens accueille le Louvre-Lens, musée gratuit le premier dimanche du mois, à 10 min à pied de la gare.",
+        "poi": [
+          { "name": "Louvre-Lens", "type": "culture", "icon": "🎨", "dist": "10 min à pied" },
+          { "name": "Parc de la Glissoire", "type": "nature", "icon": "🌿", "dist": "5 min à pied" },
+          { "name": "Stade Bollaert-Delelis (visite)", "type": "culture", "icon": "⚽", "dist": "15 min à pied" }
+        ]
+      },
+      {
+        "id": "amiens",
+        "name": "Amiens",
+        "lat": 49.8941, "lng": 2.2958,
+        "duration": 65, "co2": 0.28, "distance": 115,
+        "description": "Amiens abrite la plus grande cathédrale gothique de France et les célèbres Hortillonnages en barque.",
+        "poi": [
+          { "name": "Cathédrale Notre-Dame d'Amiens (UNESCO)", "type": "culture", "icon": "🏛️", "dist": "15 min à pied" },
+          { "name": "Hortillonnages (jardins flottants en barque)", "type": "nature", "icon": "🚣", "dist": "20 min à pied" },
+          { "name": "Maison de Jules Verne", "type": "culture", "icon": "📚", "dist": "20 min à pied" }
+        ]
+      },
+      {
+        "id": "dunkerque",
+        "name": "Dunkerque",
+        "lat": 51.0340, "lng": 2.3772,
+        "duration": 55, "co2": 0.18, "distance": 75,
+        "description": "Dunkerque et ses plages de la mer du Nord se parcourent à vélo le long du littoral.",
+        "poi": [
+          { "name": "Plage de Malo-les-Bains (vélo)", "type": "nature", "icon": "🏖️", "dist": "20 min à vélo" },
+          { "name": "LAAC (musée d'art contemporain)", "type": "culture", "icon": "🎨", "dist": "15 min à vélo" },
+          { "name": "Beffroi de Saint-Éloi", "type": "culture", "icon": "🏰", "dist": "5 min à pied" }
+        ]
+      },
+      {
+        "id": "calais",
+        "name": "Calais",
+        "lat": 50.9513, "lng": 1.8587,
+        "duration": 70, "co2": 0.28, "distance": 115,
+        "description": "Calais, face aux falaises blanches anglaises, propose un tour de la ville à vélo entre plage, dentelle et Rodin.",
+        "poi": [
+          { "name": "Cité de la dentelle et de la mode", "type": "culture", "icon": "🧵", "dist": "15 min à pied" },
+          { "name": "Plage de Calais (piste cyclable)", "type": "nature", "icon": "🏖️", "dist": "15 min à vélo" },
+          { "name": "Les Bourgeois de Calais (Rodin)", "type": "culture", "icon": "🗿", "dist": "10 min à pied" }
+        ]
+      },
+      {
+        "id": "reims",
+        "name": "Reims",
+        "lat": 49.2583, "lng": 4.0317,
+        "duration": 100, "co2": 0.48, "distance": 200,
+        "description": "La cité des sacres révèle sa cathédrale gothique et ses caves de Champagne à quelques pas de la gare.",
+        "poi": [
+          { "name": "Cathédrale Notre-Dame", "type": "culture", "icon": "🏛️", "dist": "10 min à pied" },
+          { "name": "Caves de Champagne Taittinger", "type": "gastronomie", "icon": "🍾", "dist": "20 min à pied" },
+          { "name": "Parc de Champagne", "type": "nature", "icon": "🌿", "dist": "15 min à vélo" }
+        ]
+      },
+      {
+        "id": "paris",
+        "name": "Paris",
+        "lat": 48.8566, "lng": 2.3522,
+        "duration": 60, "co2": 0.54, "distance": 225,
+        "description": "Paris, à 1h de TGV, propose Vélib', les berges de la Seine et une infinité de musées accessibles à pied.",
+        "poi": [
+          { "name": "Berges de la Seine (vélo)", "type": "sport", "icon": "🚴", "dist": "20 min à pied" },
+          { "name": "Marais et Place des Vosges", "type": "culture", "icon": "🏛️", "dist": "25 min à pied" },
+          { "name": "Bois de Vincennes (Vélib')", "type": "nature", "icon": "🌳", "dist": "30 min en Vélib'" }
+        ]
+      }
+    ],
+    "Marseille": [
+      {
+        "id": "cassis",
+        "name": "Cassis",
+        "lat": 43.2140, "lng": 5.5377,
+        "duration": 25, "co2": 0.06, "distance": 25,
+        "description": "À 25 min, Cassis et ses calanques sont accessibles à pied depuis la gare en longeant la côte.",
+        "poi": [
+          { "name": "Calanque de Port-Miou (à pied)", "type": "nature", "icon": "🏖️", "dist": "20 min à pied" },
+          { "name": "Port de Cassis", "type": "culture", "icon": "⛵", "dist": "10 min à pied" },
+          { "name": "Cap Canaille (panorama)", "type": "nature", "icon": "⛰️", "dist": "45 min à pied" }
+        ]
+      },
+      {
+        "id": "aix-en-provence",
+        "name": "Aix-en-Provence",
+        "lat": 43.5297, "lng": 5.4474,
+        "duration": 35, "co2": 0.08, "distance": 35,
+        "description": "Aix-en-Provence, ville de Cézanne, concentre cours Mirabeau, musées et fontaines dans un périmètre piéton.",
+        "poi": [
+          { "name": "Cours Mirabeau et fontaines", "type": "culture", "icon": "⛲", "dist": "15 min à pied" },
+          { "name": "Atelier Cézanne", "type": "culture", "icon": "🎨", "dist": "25 min à pied" },
+          { "name": "Parc Jourdan", "type": "nature", "icon": "🌿", "dist": "10 min à pied" }
+        ]
+      },
+      {
+        "id": "toulon",
+        "name": "Toulon",
+        "lat": 43.1242, "lng": 5.9280,
+        "duration": 50, "co2": 0.16, "distance": 65,
+        "description": "Toulon et sa rade proposent le téléphérique du Mont Faron et les balades à vélo en bord de mer.",
+        "poi": [
+          { "name": "Mont Faron (téléphérique)", "type": "nature", "icon": "🚡", "dist": "15 min à pied" },
+          { "name": "Rade de Toulon (promenade)", "type": "nature", "icon": "⛵", "dist": "10 min à pied" },
+          { "name": "Musée National de la Marine", "type": "culture", "icon": "⚓", "dist": "12 min à pied" }
+        ]
+      },
+      {
+        "id": "arles",
+        "name": "Arles",
+        "lat": 43.6767, "lng": 4.6277,
+        "duration": 50, "co2": 0.18, "distance": 75,
+        "description": "Arles, la Rome de la Gaule, concentre amphithéâtre et thermes romains dans un centre piéton de 10 min à pied.",
+        "poi": [
+          { "name": "Amphithéâtre romain (arènes)", "type": "culture", "icon": "🏟️", "dist": "8 min à pied" },
+          { "name": "Fondation Vincent van Gogh", "type": "culture", "icon": "🎨", "dist": "10 min à pied" },
+          { "name": "Camargue à vélo (voie verte)", "type": "nature", "icon": "🚴", "dist": "10 min à vélo" }
+        ]
+      },
+      {
+        "id": "avignon",
+        "name": "Avignon",
+        "lat": 43.9493, "lng": 4.8055,
+        "duration": 35, "co2": 0.24, "distance": 100,
+        "description": "Avignon, cité des papes, s'explore entièrement à pied à l'intérieur de ses remparts médiévaux.",
+        "poi": [
+          { "name": "Palais des Papes (site UNESCO)", "type": "culture", "icon": "🏰", "dist": "15 min à pied" },
+          { "name": "Pont Saint-Bénézet", "type": "culture", "icon": "🌉", "dist": "18 min à pied" },
+          { "name": "Rocher des Doms (jardins)", "type": "nature", "icon": "🌿", "dist": "15 min à pied" }
+        ]
+      },
+      {
+        "id": "nimes",
+        "name": "Nîmes",
+        "lat": 43.8367, "lng": 4.3601,
+        "duration": 65, "co2": 0.29, "distance": 120,
+        "description": "Nîmes possède les monuments romains les mieux conservés de France, tous à pied depuis la gare.",
+        "poi": [
+          { "name": "Arènes de Nîmes (amphithéâtre romain)", "type": "culture", "icon": "🏟️", "dist": "10 min à pied" },
+          { "name": "Maison Carrée (temple romain)", "type": "culture", "icon": "🏛️", "dist": "12 min à pied" },
+          { "name": "Jardins de la Fontaine", "type": "nature", "icon": "🌿", "dist": "20 min à pied" }
+        ]
+      },
+      {
+        "id": "montpellier",
+        "name": "Montpellier",
+        "lat": 43.6108, "lng": 3.8767,
+        "duration": 60, "co2": 0.46, "distance": 190,
+        "description": "Montpellier, ville étudiante, possède un tramway couvrant toute la ville et des plages à 15 min.",
+        "poi": [
+          { "name": "Place de la Comédie", "type": "culture", "icon": "🏛️", "dist": "10 min à pied" },
+          { "name": "Plage de Palavas (tramway)", "type": "nature", "icon": "🏖️", "dist": "30 min en tram" },
+          { "name": "Promenade du Peyrou", "type": "nature", "icon": "🌳", "dist": "20 min à pied" }
+        ]
+      },
+      {
+        "id": "nice",
+        "name": "Nice",
+        "lat": 43.7102, "lng": 7.2620,
+        "duration": 155, "co2": 0.48, "distance": 200,
+        "description": "Nice et la Promenade des Anglais à vélo, le Vieux-Nice et ses marchés, à 2h30 en TGV depuis Marseille.",
+        "poi": [
+          { "name": "Promenade des Anglais (vélo)", "type": "sport", "icon": "🚴", "dist": "15 min à pied" },
+          { "name": "Vieux-Nice et marché du Cours Saleya", "type": "culture", "icon": "🏘️", "dist": "20 min à pied" },
+          { "name": "Colline du Château (panorama)", "type": "nature", "icon": "⛰️", "dist": "25 min à pied" }
+        ]
+      }
+    ],
+    "Nantes": [
+      {
+        "id": "saint-nazaire",
+        "name": "Saint-Nazaire",
+        "lat": 47.2737, "lng": -2.2130,
+        "duration": 55, "co2": 0.16, "distance": 65,
+        "description": "Saint-Nazaire propose son pont autoroutier cyclable, ses chantiers navals et la plage de Saint-Marc.",
+        "poi": [
+          { "name": "Escal'Atlantic (sous-marin et paquebot)", "type": "culture", "icon": "🚢", "dist": "10 min à pied" },
+          { "name": "Plage de Saint-Marc (vélo 5km)", "type": "nature", "icon": "🏖️", "dist": "20 min à vélo" },
+          { "name": "Pont de Saint-Nazaire (piste cyclable)", "type": "sport", "icon": "🌉", "dist": "25 min à vélo" }
+        ]
+      },
+      {
+        "id": "angers",
+        "name": "Angers",
+        "lat": 47.4784, "lng": -0.5632,
+        "duration": 40, "co2": 0.22, "distance": 90,
+        "description": "Entre château médiéval et jardins remarquables, Angers est une ville compacte et agréable à parcourir à pied.",
+        "poi": [
+          { "name": "Château d'Angers (Tapisserie de l'Apocalypse)", "type": "culture", "icon": "🏰", "dist": "15 min à pied" },
+          { "name": "Jardin des Plantes", "type": "nature", "icon": "🌸", "dist": "10 min à pied" },
+          { "name": "Loire à vélo depuis Angers", "type": "sport", "icon": "🚴", "dist": "5 min à pied" }
+        ]
+      },
+      {
+        "id": "vannes",
+        "name": "Vannes",
+        "lat": 47.6559, "lng": -2.7603,
+        "duration": 70, "co2": 0.28, "distance": 115,
+        "description": "Vannes et ses remparts médiévaux, le golfe du Morbihan et ses îles sont accessibles à vélo.",
+        "poi": [
+          { "name": "Remparts et vieille ville de Vannes", "type": "culture", "icon": "🏰", "dist": "10 min à pied" },
+          { "name": "Golfe du Morbihan (vélo côtier)", "type": "nature", "icon": "🌊", "dist": "20 min à vélo" },
+          { "name": "Île aux Moines (ferry + vélo)", "type": "nature", "icon": "🏝️", "dist": "40 min (ferry)" }
+        ]
+      },
+      {
+        "id": "rennes",
+        "name": "Rennes",
+        "lat": 48.1173, "lng": -1.6778,
+        "duration": 75, "co2": 0.26, "distance": 110,
+        "description": "Rennes conjugue centre historique à colombages, parcs verdoyants et gastronomie bretonne accessibles à pied.",
+        "poi": [
+          { "name": "Parc du Thabor", "type": "nature", "icon": "🌳", "dist": "20 min à pied" },
+          { "name": "Centre médiéval et parlement de Bretagne", "type": "culture", "icon": "🏛️", "dist": "10 min à pied" },
+          { "name": "Marché des Lices (samedi matin)", "type": "gastronomie", "icon": "🥐", "dist": "12 min à pied" }
+        ]
+      },
+      {
+        "id": "la-rochelle",
+        "name": "La Rochelle",
+        "lat": 46.1591, "lng": -1.1520,
+        "duration": 90, "co2": 0.34, "distance": 140,
+        "description": "La Rochelle, pionnière du vélo, s'explore à vélo entre son port médiéval et l'île de Ré.",
+        "poi": [
+          { "name": "Vieux-Port et tours médiévales", "type": "culture", "icon": "🏰", "dist": "15 min à pied" },
+          { "name": "Île de Ré (vélo depuis le pont)", "type": "nature", "icon": "🏝️", "dist": "30 min à vélo" },
+          { "name": "Réseau Yélo (vélos en libre-service)", "type": "sport", "icon": "🚴", "dist": "0 min (partout)" }
+        ]
+      },
+      {
+        "id": "le-mans",
+        "name": "Le Mans",
+        "lat": 48.0061, "lng": 0.1996,
+        "duration": 90, "co2": 0.44, "distance": 185,
+        "description": "La vieille ville médiévale du Mans, la Cité Plantagenêt, se découvre entièrement à pied depuis la gare.",
+        "poi": [
+          { "name": "Cité Plantagenêt (remparts romains)", "type": "culture", "icon": "🏰", "dist": "15 min à pied" },
+          { "name": "Cathédrale Saint-Julien", "type": "culture", "icon": "⛪", "dist": "20 min à pied" },
+          { "name": "Arche de la Nature (parc naturel)", "type": "nature", "icon": "🌲", "dist": "20 min à vélo" }
+        ]
+      },
+      {
+        "id": "tours",
+        "name": "Tours",
+        "lat": 47.3941, "lng": 0.6848,
+        "duration": 100, "co2": 0.44, "distance": 185,
+        "description": "Porte d'entrée des châteaux de la Loire, Tours propose la Loire à vélo et un vieux quartier animé.",
+        "poi": [
+          { "name": "Loire à vélo — tronçon Tours-Amboise", "type": "sport", "icon": "🚴", "dist": "5 min à pied" },
+          { "name": "Vieux Tours (place Plumereau)", "type": "culture", "icon": "🏡", "dist": "10 min à pied" },
+          { "name": "Château d'Amboise (vélo ~20km)", "type": "culture", "icon": "🏰", "dist": "1h à vélo" }
+        ]
+      },
+      {
+        "id": "paris",
+        "name": "Paris",
+        "lat": 48.8566, "lng": 2.3522,
+        "duration": 130, "co2": 0.94, "distance": 390,
+        "description": "Paris, à 2h10 de TGV depuis Nantes, propose Vélib', les berges de la Seine et une infinité de musées.",
+        "poi": [
+          { "name": "Berges de la Seine (vélo)", "type": "sport", "icon": "🚴", "dist": "20 min à pied" },
+          { "name": "Marais et Place des Vosges", "type": "culture", "icon": "🏛️", "dist": "25 min à pied" },
+          { "name": "Bois de Vincennes (Vélib')", "type": "nature", "icon": "🌳", "dist": "30 min en Vélib'" }
+        ]
+      }
+    ]
+  }
+}

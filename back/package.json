@@ -1,0 +1,16 @@
+{
+  "name": "sncf-weekend-bas-carbone",
+  "version": "1.0.0",
+  "description": "Assistant week-end bas carbone SNCF",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.102.0",
+    "@google/generative-ai": "^0.24.1",
+    "dotenv": "^17.4.2",
+    "express": "^4.18.2",
+    "groq-sdk": "^1.2.1"
+  }
+}

@@ -1,10 +1,10 @@
-#  Assistant Week-end Bas Carbone SNCF Hackathon
+#  Assistant Week-end Bas Carbone — SNCF Hackathon
 
 ---
 
 ## Présentation
 
-**Assistant Week-end Bas Carbone** est une application web conçue pour le hackathon SNCF. Elle permet aux voyageurs de découvrir des destinations de week-end accessibles en train depuis leur ville, en mettant au cœur de l'expérience l'empreinte carbone du trajet.
+**Assistant Week-end Bas Carbone** est une application web conçue pour le hackathon EFREI Paris — Learning XP Tourisme en train (juin 2026). Elle permet aux voyageurs de découvrir des destinations de week-end accessibles en train depuis leur ville, en mettant au cœur de l'expérience l'empreinte carbone du trajet.
 
 L'idée : rendre le voyage bas carbone **désirable**, pas seulement raisonnable.
 
@@ -21,8 +21,8 @@ L'idée : rendre le voyage bas carbone **désirable**, pas seulement raisonnable
 ### Carte interactive
 - Carte Leaflet + OpenStreetMap
 - Marqueurs colorés selon l'empreinte CO₂ (vert → orange → rouge)
-- Popup détaillé au survol : CO₂, durée, POIs
-- Synchronisation carte ↔ cards latérales (clic sur marqueur = card active)
+- Popup détaillé au clic : CO₂, durée, POIs
+- Synchronisation carte ↔ cards latérales
 
 ### Cards de destinations
 - Nom, distance, durée de trajet, empreinte CO₂ avec badge coloré
@@ -30,10 +30,10 @@ L'idée : rendre le voyage bas carbone **désirable**, pas seulement raisonnable
 - Description IA générée au clic (lazy loading — un seul appel par destination)
 
 ### Chatbot IA
-- Bouton flottant  en bas à droite
+- Bouton flottant en bas à droite
 - Conversation multi-tours avec mémoire du contexte
 - L'IA connaît toutes les destinations chargées (POIs, CO₂, durée)
-- Capable de : recommander selon les envies, décrire une ville, comparer des destinations, répondre aux questions sur le voyage
+- Capable de : recommander selon les envies, décrire une ville, comparer des destinations
 
 ---
 
@@ -44,14 +44,15 @@ L'idée : rendre le voyage bas carbone **désirable**, pas seulement raisonnable
 | Frontend | AngularJS 1.8.3 |
 | Carte | Leaflet.js 1.9.4 + OpenStreetMap |
 | Backend | Node.js + Express 4 |
-| IA | Groq (LLaMA 3.1) — gratuit |
+| IA | Groq (LLaMA 3.1-8b-instant) — gratuit |
 | Données | JSON statique (54 destinations) |
+| API transport | Navitia / API SNCF (clé configurée) |
 
 ---
 
 ## Calcul CO₂
 
-Les empreintes sont calculées avec le facteur d'émission officiel du train français :
+Les empreintes sont calculées avec le facteur d'émission officiel du train français (source ADEME) :
 
 ```
 CO₂ (kg) = distance (km) × 2,4 g/km ÷ 1000
@@ -79,6 +80,7 @@ Exemple — Paris → Bordeaux (585 km) :
 ### Prérequis
 - Node.js 18+
 - Un compte [Groq](https://console.groq.com) (gratuit, sans carte bancaire)
+- Une clé API SNCF (Navitia) — optionnelle
 
 ### Cloner et lancer le projet
 
@@ -87,34 +89,23 @@ Exemple — Paris → Bordeaux (585 km) :
 git clone https://github.com/mouamar69/SNCF-Project.git
 cd SNCF-Project
 
-# 2. Installer les dépendances
+# 2. Installer les dépendances (dans le dossier back/)
+cd back
 npm install
 
-# 3. Configurer la clé API
-# Créer un fichier .env à la racine :
-GROQ_API_KEY=gsk_...votre_clé
+# 3. Configurer les clés API
+# Créer un fichier back/.env :
+GROQ_API_KEY=gsk_...votre_clé_groq
+SNCF_API_KEY=...votre_clé_navitia
 
-# 4. Lancer le serveur
+# 4. Lancer le serveur (depuis back/)
 npm start
-# ou
-node server.js
 
 # 5. Ouvrir dans le navigateur
 # http://localhost:3000
 ```
 
- Le fichier `.env` n'est pas inclus dans le dépôt (données sensibles). Il doit être créé manuellement sur chaque machine.
-
-### Publier sur GitHub (première fois)
-
-```bash
-git init
-git add index.html app.js style.css server.js package.json package-lock.json README.md data/ .gitignore
-git commit -m "Initial commit — Assistant Week-end Bas Carbone"
-git remote add origin https://github.com/mouamar69/SNCF-Project.git
-git branch -M main
-git push -u origin main
-```
+Le fichier `.env` n'est pas inclus dans le dépôt. Il doit être créé manuellement sur chaque machine.
 
 ---
 
@@ -122,14 +113,19 @@ git push -u origin main
 
 ```
 SNCF/
-├── index.html              # Interface utilisateur (AngularJS)
-├── app.js                  # Controller AngularJS (logique frontend)
-├── style.css               # Design et styles
-├── server.js               # Serveur Express + endpoints IA
-├── package.json
-├── .env                    # Clé API (ne pas commiter)
-└── data/
-    └── destinations.json   # 54 destinations, 6 villes de départ
+├── front/
+│   ├── index.html          # Interface utilisateur (AngularJS)
+│   ├── app.js              # Controller AngularJS (logique frontend)
+│   └── style.css           # Design et styles
+├── back/
+│   ├── server.js           # Serveur Express + endpoints IA
+│   ├── package.json
+│   ├── .env                # Clés API (ne pas commiter)
+│   └── data/
+│       └── destinations.json  # 54 destinations, 6 villes de départ
+├── README.md
+├── fiche_cadrage.md        # Fiche de cadrage EFREI
+└── .gitignore
 ```
 
 ### Endpoints API
@@ -138,8 +134,8 @@ SNCF/
 |---|---|---|
 | GET | `/api/cities` | Liste des villes de départ |
 | GET | `/api/destinations` | Destinations filtrées (from, co2_max, hours_max) |
-| POST | `/api/ai-narrative` | Description IA d'une destination |
-| POST | `/api/ai-prioritize` | Réordonne les destinations selon un prompt |
+| POST | `/api/ai-narrative` | Description IA d'une destination (avec retry automatique) |
+| POST | `/api/ai-prioritize` | Réordonne les destinations selon un prompt utilisateur |
 | POST | `/api/chat` | Conversation avec l'assistant IA |
 
 ---
@@ -152,23 +148,24 @@ Chaque destination contient :
 - Coordonnées GPS
 - Distance (km), durée (min), CO₂ (kg)
 - Description statique
-- 3 POIs minimum avec icône, nom et distance depuis la gare
+- 3 POIs minimum avec nom et distance depuis la gare
 
 ### Villes de départ couvertes
 Paris · Lyon · Bordeaux · Lille · Marseille · Nantes
 
 ---
 
-## Providers IA
+## Mode dégradé
 
-Le serveur détecte automatiquement la clé disponible dans `.env` :
-
- **Groq / LLaMA 3** (`GROQ_API_KEY`) — fallback gratuit
-
-Si aucune clé n'est configurée, l'app fonctionne normalement sans les fonctionnalités IA (descriptions statiques uniquement).
+- Toutes les données (destinations, POI, CO₂) sont en **JSON statique local** — la démo fonctionne sans aucune connexion externe
+- Si la clé Groq n'est pas configurée, l'app bascule automatiquement sur les **descriptions statiques** pré-rédigées
+- En cas d'erreur réseau Groq, le serveur réessaie automatiquement avant de basculer sur la description statique
+- Le chatbot affiche un message explicite si le service IA est indisponible
 
 ---
 
 ## Auteur
 
-Projet réalisé en equipe pour le hackathon SNCF 2025.
+Projet réalisé en équipe (THE FIVE) pour le hackathon EFREI Paris Learning XP Tourisme en train, juin 2026.
+
+Membres : Mouamar ADJAHO · Mouhamadou WAGUE · Rose-Irène BITEGHE BENGONO · Darrel NGADJUI MEZOU · Yvan ONGOLO ONGOLO

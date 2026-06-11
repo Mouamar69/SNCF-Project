@@ -66,11 +66,11 @@ Exemple — Paris → Bordeaux (585 km) :
 
 | Couleur | Seuil | Niveau |
 |---|---|---|
-| 🟢 Vert foncé | < 0,3 kg | Très faible |
-| 🟢 Vert clair | 0,3 – 0,6 kg | Faible |
-| 🟠 Orange | 0,6 – 1,0 kg | Modéré |
-| 🟠 Orange foncé | 1,0 – 1,5 kg | Élevé |
-| 🔴 Rouge | > 1,5 kg | Très élevé |
+| Vert foncé | < 0,3 kg | Très faible |
+| Vert clair | 0,3 – 0,6 kg | Faible |
+| Orange | 0,6 – 1,0 kg | Modéré |
+| Orange foncé | 1,0 – 1,5 kg | Élevé |
+| Rouge | > 1,5 kg | Très élevé |
 
 ---
 

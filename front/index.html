@@ -14,14 +14,14 @@
 
   <header>
     <div class="header-left">
-      <div class="logo">🚆 SNCF</div>
+      <div class="logo">SNCF</div>
       <div class="header-titles">
-        <div class="header-title">Assistant Week-end Bas Carbone</div>
-        <div class="header-sub">Partez en train, respectez la planète</div>
+        <div class="header-title">Week-end en train</div>
+        <div class="header-sub">Trouvez votre prochaine escapade bas carbone</div>
       </div>
     </div>
     <div class="co2-badge-header">
-      <span>🌿 Train = 50× moins de CO₂ que la voiture</span>
+      <span>50× moins de CO₂ qu'en voiture</span>
     </div>
   </header>
 
@@ -36,7 +36,7 @@
       </div>
 
       <div class="search-field">
-        <label>Budget CO₂ max : <strong>{{ formatCo2(co2Max) }} kg</strong></label>
+        <label>Empreinte max: <strong>{{ formatCo2(co2Max) }} kg</strong></label>
         <div class="slider-row">
           <span class="slider-min">0,1</span>
           <input type="range" ng-model="co2Max" min="0.1" max="3.0" step="0.1" class="slider" />
@@ -60,7 +60,7 @@
 
       <div class="search-field search-btn-field">
         <button ng-click="search()" ng-disabled="loading" class="btn-search">
-          <span ng-if="!loading">🔍 Trouver des destinations</span>
+          <span ng-if="!loading">Trouver ma destination</span>
           <span ng-if="loading">Recherche...</span>
         </button>
       </div>
@@ -97,7 +97,7 @@
         </span>
         <span ng-if="destinations.length === 0 && searched && !errorMsg">Aucun résultat</span>
         <div class="ai-explanation" ng-if="aiExplanation">
-          <span class="ai-explanation-badge">✨ IA</span> {{ aiExplanation }}
+          <span class="ai-explanation-badge">Chat Bot Assistant</span> {{ aiExplanation }}
         </div>
       </div>
 
@@ -117,23 +117,22 @@
           <div class="dest-card-top">
             <div class="dest-name">{{ dest.name }}</div>
             <div class="dest-co2-badge" ng-style="{ background: co2Color(dest.co2) + '22', color: co2Color(dest.co2), borderColor: co2Color(dest.co2) }">
-              🌿 {{ dest.co2 | number:2 }} kg CO₂
+              {{ dest.co2 | number:2 }} kg CO₂
             </div>
           </div>
 
           <div class="dest-meta">
-            <span class="dest-meta-item">🕐 {{ formatDuration(dest.duration) }}</span>
-            <span class="dest-meta-item">📏 {{ dest.distance }} km</span>
+            <span class="dest-meta-item">{{ formatDuration(dest.duration) }}</span>
+            <span class="dest-meta-item">{{ dest.distance }} km</span>
             <span class="dest-meta-item dest-co2-label" ng-style="{ color: co2Color(dest.co2) }">{{ co2Label(dest.co2) }}</span>
           </div>
 
           <!-- AI narrative (lazy loaded on card click) -->
           <div ng-if="selectedDest && selectedDest.id === dest.id">
             <div class="ai-narrative-loading" ng-if="aiLoading[dest.id]">
-              <span class="ai-spinner"></span> Génération en cours...
+              <span class="ai-spinner"></span> Un instant...
             </div>
             <div class="ai-narrative" ng-if="aiNarrative[dest.id]">
-              <span class="ai-narrative-badge">✨ IA</span>
               <p class="ai-narrative-text">{{ aiNarrative[dest.id] }}</p>
             </div>
             <p class="dest-desc" ng-if="!aiNarrative[dest.id] && !aiLoading[dest.id]">{{ dest.description }}</p>
@@ -142,16 +141,15 @@
 
           <div class="dest-pois">
             <div class="dest-poi" ng-repeat="p in dest.poi">
-              <span class="poi-icon">{{ p.icon }}</span>
               <span class="poi-name">{{ p.name }}</span>
-              <span class="poi-dist">{{ p.dist }}</span>
+              <span class="poi-dist"> {{ p.dist }}</span>
             </div>
           </div>
 
         </div>
 
         <div class="no-results" ng-if="destinations.length === 0 && !errorMsg && searched">
-          <div class="no-results-icon">🌍</div>
+          <div class="no-results-icon"></div>
           <p>Aucune destination ne correspond à ces critères.</p>
           <p>Essayez d'augmenter le budget CO₂ ou la durée de trajet.</p>
         </div>
@@ -162,10 +160,10 @@
 
   <!-- Call to action avant recherche -->
   <div class="landing-cta" ng-if="!searched">
-    <div class="cta-icon">🌿</div>
-    <h2>Découvrez où aller ce week-end</h2>
-    <p>Entrez votre ville de départ, choisissez votre budget carbone et trouvez des destinations accessibles à pied ou à vélo depuis la gare.</p>
-    <button ng-click="search()" class="btn-search btn-big">Lancer la recherche</button>
+    <div class="cta-icon"></div>
+    <h2>Où aller ce week-end ?</h2>
+    <p>Choisissez votre ville et votre budget CO₂  on s'occupe du reste. Toutes les destinations sont accessibles à pied ou à vélo depuis la gare.</p>
+    <button ng-click="search()" class="btn-search btn-big">Je cherche</button>
   </div>
 
   <!-- Chatbot flottant -->
@@ -177,10 +175,10 @@
   <div class="chat-panel" ng-show="chatOpen">
     <div class="chat-header">
       <div class="chat-header-title">
-        <span class="chat-header-icon">✨</span>
+        <span class="chat-header-icon"></span>
         <div>
-          <div class="chat-header-name">Assistant IA SNCF</div>
-          <div class="chat-header-sub">Décrivez votre week-end idéal</div>
+          <div class="chat-header-name">Guide voyage</div>
+          <div class="chat-header-sub">Quel week-end vous fait envie ?</div>
         </div>
       </div>
       <button class="chat-close-btn" ng-click="toggleChat()">✕</button>

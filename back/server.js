@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: require("path").join(__dirname, ".env") });
 const express = require("express");
 const path = require("path");
 const data = require("./data/destinations.json");
@@ -9,34 +9,9 @@ const PORT = 3000;
 app.use(express.static(path.join(__dirname, "../front")));
 app.use(express.json());
 
-// IA provider : Google Gemini (priorité) ou Groq (fallback)
 let aiProvider = null;
 
-if (process.env.GOOGLE_API_KEY && process.env.GOOGLE_API_KEY !== "your_google_api_key_here") {
-  const { GoogleGenerativeAI } = require("@google/generative-ai");
-  const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-  aiProvider = {
-    name: "Google Gemini",
-    async chat(systemPrompt, messages) {
-      const history = messages.slice(0, -1).map(m => ({
-        role: m.role === "assistant" ? "model" : "user",
-        parts: [{ text: m.content }]
-      }));
-      const chat = model.startChat({
-        history,
-        systemInstruction: { parts: [{ text: systemPrompt }] }
-      });
-      const result = await chat.sendMessage(messages[messages.length - 1].content);
-      return result.response.text().trim();
-    },
-    async generate(prompt) {
-      const result = await model.generateContent(prompt);
-      return result.response.text().trim();
-    }
-  };
-  console.log("✅ Google Gemini connecté");
-} else if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY !== "your_groq_api_key_here") {
+if (process.env.GROQ_API_KEY && process.env.GROQ_API_KEY !== "your_groq_api_key_here") {
   const Groq = require("groq-sdk");
   const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
   aiProvider = {
@@ -54,9 +29,9 @@ if (process.env.GOOGLE_API_KEY && process.env.GOOGLE_API_KEY !== "your_google_ap
       return c.choices[0].message.content.trim();
     }
   };
-  console.log("✅ Groq connecté (LLaMA 3)");
+  console.log("Groq connecté (LLaMA 3)");
 } else {
-  console.log("ℹ️  Pas de clé IA — fonctionnalités IA désactivées");
+  console.log("Pas de clé IA — fonctionnalités IA désactivées");
 }
 
 app.get("/api/cities", (req, res) => {
@@ -92,7 +67,7 @@ app.post("/api/ai-narrative", async (req, res) => {
   const durationStr = h > 0 ? `${h}h${m ? m.toString().padStart(2, "0") : ""}` : `${m}min`;
 
   const poiText = (destination.poi || [])
-    .map(p => `- ${p.icon} ${p.name} (${p.dist})`)
+    .map(p => `- ${p.name} (${p.dist})`)
     .join("\n");
 
   const prompt = `Tu es un guide de voyage SNCF enthousiaste et poétique. Génère une description courte et captivante (2-3 phrases maximum) pour ce week-end en train depuis ${from} :
@@ -105,7 +80,16 @@ ${poiText}
 Réponds uniquement avec la description, sans titre ni formatage. Style enthousiaste, évocateur, qui donne envie de partir ce week-end.`;
 
   try {
-    const description = await aiProvider.generate(prompt);
+    let description = null;
+    for (let i = 0; i < 2; i++) {
+      try {
+        description = await aiProvider.generate(prompt);
+        break;
+      } catch (e) {
+        if (i === 1) throw e;
+        await new Promise(r => setTimeout(r, 1500));
+      }
+    }
     res.json({ description });
   } catch (err) {
     console.error("Erreur AI narrative:", err.message);
@@ -146,7 +130,7 @@ Identifie les 5 destinations les plus adaptées à cette demande. Réponds UNIQU
 });
 
 app.post("/api/chat", async (req, res) => {
-  if (!aiProvider) return res.json({ reply: "Le service IA n'est pas disponible. Ajoutez votre clé Groq dans le fichier .env (GROQ_API_KEY)." });
+  if (!aiProvider) return res.json({ reply: "Le service IA n'est pas disponible." });
 
   const { messages, context } = req.body;
   if (!messages || !Array.isArray(messages) || messages.length === 0) {
@@ -162,7 +146,7 @@ app.post("/api/chat", async (req, res) => {
         const h = Math.floor(d.duration / 60);
         const m = d.duration % 60;
         const dur = h > 0 ? `${h}h${m ? m.toString().padStart(2, "0") : ""}` : `${m}min`;
-        const pois = (d.poi || []).map(p => `${p.icon} ${p.name}`).join(", ");
+        const pois = (d.poi || []).map(p => p.name).join(", ");
         return `• ${d.name} — ${d.distance}km, ${dur}, ${d.co2}kg CO₂ | ${pois}`;
       }).join("\n");
   } else {

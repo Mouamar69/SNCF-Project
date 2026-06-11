@@ -27,7 +27,7 @@ angular.module("sncfApp", [])
     if ($scope.chatOpen && $scope.chatMessages.length === 0) {
       $scope.chatMessages.push({
         role: "assistant",
-        content: "Bonjour ! 👋 Je suis votre assistant voyage SNCF. Décrivez-moi le week-end idéal que vous recherchez — mer, montagne, culture, gastronomie — et je vous aide à trouver la destination parfaite parmi les résultats disponibles !"
+        content: "Bonjour !! Vous partez où ce week-end ? Dites-moi ce qui vous tente la mer, la montagne, une marche, une randonnée et je regarde ce qu'on a pour vous parmi les destinations disponibles."
       });
     }
     if ($scope.chatOpen) {
@@ -164,14 +164,14 @@ angular.module("sncfApp", [])
       });
 
       var poiHtml = dest.poi.map(function (p) {
-        return "<div class='popup-poi'>" + p.icon + " <b>" + p.name + "</b> <span class='popup-dist'>— " + p.dist + "</span></div>";
+        return "<div class='popup-poi'><b>" + p.name + "</b> <span class='popup-dist'> " + p.dist + "</span></div>";
       }).join("");
 
       marker.bindPopup(
         "<div class='popup-header'><b>" + dest.name + "</b></div>" +
         "<div class='popup-meta'>" +
-          "<span class='popup-co2' style='color:" + color + "'>🌿 " + dest.co2 + " kg CO₂</span>" +
-          " &nbsp; 🕐 " + $scope.formatDuration(dest.duration) +
+          "<span class='popup-co2' style='color:" + color + "'> " + dest.co2 + " kg CO₂</span>" +
+          " &nbsp;" + $scope.formatDuration(dest.duration) +
         "</div>" +
         "<p class='popup-desc'>" + dest.description + "</p>" +
         "<div class='popup-poi-list'>" + poiHtml + "</div>",
@@ -227,6 +227,8 @@ angular.module("sncfApp", [])
       $timeout(function () {
         updateMap(res.data.fromCoords, res.data.destinations);
         if (map) map.invalidateSize();
+        var sidebar = document.querySelector(".dest-cards");
+        if (sidebar) sidebar.scrollTop = 0;
       }, 50);
 
     }).catch(function () {

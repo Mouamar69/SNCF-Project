@@ -6,6 +6,7 @@ const data = require("./data/destinations.json");
 
 const SNCF_API_KEY = process.env.SNCF_API_KEY || null;
 const SNCF_BASE = "api.sncf.com";
+const ADEME_API_KEY = process.env.ADEME_API_KEY || null;
 
 const SNCF_STATIONS = {
   "Paris":     "stop_area:SNCF:87686006",
@@ -33,6 +34,49 @@ function sncfGet(urlPath) {
       });
     }).on("error", reject);
   });
+}
+
+const ADEME_TRANSPORT_IDS = {
+  "TGV":                    2,
+  "TGV INOUI":              2,
+  "OUIGO":                  2,
+  "OUIGO Train Classique":  2,
+  "Intercités":             3,
+  "Intercites":             3,
+  "RER":                    14,
+  "Transilien":             14,
+  "TER":                    15,
+  "REGIONAURA":             15,
+  "NOMAD":                  15,
+  "OCCITANIE":              15,
+  "PACA":                   15,
+  "REMI":                   15
+};
+
+function ademeGet(urlPath) {
+  return new Promise((resolve, reject) => {
+    const headers = { Accept: "application/json" };
+    if (ADEME_API_KEY) headers["Authorization"] = "Bearer " + ADEME_API_KEY;
+    const options = {
+      hostname: "impactco2.fr",
+      path: "/api/v1" + urlPath,
+      headers
+    };
+    https.get(options, (res) => {
+      let body = "";
+      res.on("data", (chunk) => body += chunk);
+      res.on("end", () => {
+        try { resolve(JSON.parse(body)); }
+        catch (e) { reject(e); }
+      });
+    }).on("error", reject);
+  });
+}
+
+async function getAdemeCo2(trainType, distanceKm) {
+  const id = ADEME_TRANSPORT_IDS[trainType] || 2;
+  const result = await ademeGet(`/transport?km=${distanceKm}&transports=${id}`);
+  return result.data?.[0]?.value ?? null;
 }
 
 function nowDatetime() {
@@ -232,17 +276,33 @@ app.get("/api/sncf-journey", async (req, res) => {
     const dt = nowDatetime();
     const journeysData = await sncfGet(`/coverage/sncf/journeys?from=${encodeURIComponent(fromId)}&to=${encodeURIComponent(toId)}&datetime=${dt}&count=4`);
 
-    const journeys = (journeysData.journeys || []).map(j => {
+    const destData = (data.destinations[from] || []).find(d => d.name === to);
+    const distanceKm = destData?.distance || null;
+
+    const journeysRaw = (journeysData.journeys || []).map(j => {
       const trainSection = j.sections?.find(s => s.type === "public_transport");
       return {
         departure: j.departure_date_time,
         arrival: j.arrival_date_time,
         duration: Math.round(j.duration / 60),
-        co2: j.co2_emission ? Math.round(j.co2_emission.value) / 1000 : null,
+        co2Sncf: j.co2_emission ? Math.round(j.co2_emission.value) / 1000 : null,
         trainType: trainSection?.display_informations?.commercial_mode || null,
         trainNumber: trainSection?.display_informations?.trip_short_name || null
       };
     });
+
+    const journeys = await Promise.all(journeysRaw.map(async j => {
+      let co2Ademe = null;
+      if (distanceKm && j.trainType) {
+        try { co2Ademe = await getAdemeCo2(j.trainType, distanceKm); } catch (_) {}
+      }
+      return {
+        ...j,
+        co2: co2Ademe !== null ? co2Ademe : j.co2Sncf,
+        co2Ademe,
+        co2Sncf: j.co2Sncf
+      };
+    }));
 
     res.json({ from, to, journeys });
   } catch (err) {

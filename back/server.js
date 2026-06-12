@@ -1,7 +1,49 @@
 require("dotenv").config({ path: require("path").join(__dirname, ".env") });
 const express = require("express");
 const path = require("path");
+const https = require("https");
 const data = require("./data/destinations.json");
+
+const SNCF_API_KEY = process.env.SNCF_API_KEY || null;
+const SNCF_BASE = "api.sncf.com";
+
+const SNCF_STATIONS = {
+  "Paris":     "stop_area:SNCF:87686006",
+  "Lyon":      "stop_area:SNCF:87722025",
+  "Bordeaux":  "stop_area:SNCF:87581009",
+  "Lille":     "stop_area:SNCF:87286005",
+  "Marseille": "stop_area:SNCF:87751008",
+  "Nantes":    "stop_area:SNCF:87481002"
+};
+
+function sncfGet(urlPath) {
+  return new Promise((resolve, reject) => {
+    const auth = Buffer.from(SNCF_API_KEY + ":").toString("base64");
+    const options = {
+      hostname: SNCF_BASE,
+      path: "/v1" + urlPath,
+      headers: { Authorization: "Basic " + auth }
+    };
+    https.get(options, (res) => {
+      let body = "";
+      res.on("data", (chunk) => body += chunk);
+      res.on("end", () => {
+        try { resolve(JSON.parse(body)); }
+        catch (e) { reject(e); }
+      });
+    }).on("error", reject);
+  });
+}
+
+function nowDatetime() {
+  const d = new Date();
+  return d.getFullYear().toString() +
+    String(d.getMonth() + 1).padStart(2, "0") +
+    String(d.getDate()).padStart(2, "0") + "T" +
+    String(d.getHours()).padStart(2, "0") +
+    String(d.getMinutes()).padStart(2, "0") +
+    String(d.getSeconds()).padStart(2, "0");
+}
 
 const app = express();
 const PORT = 3000;
@@ -170,6 +212,42 @@ Instructions :
   } catch (err) {
     console.error("Erreur chat:", err.message);
     res.json({ reply: "Désolé, une erreur s'est produite. Réessayez dans un instant." });
+  }
+});
+
+app.get("/api/sncf-journey", async (req, res) => {
+  if (!SNCF_API_KEY) return res.status(503).json({ error: "Clé API SNCF manquante" });
+
+  const { from, to } = req.query;
+  if (!from || !to) return res.status(400).json({ error: "Paramètres from et to requis" });
+
+  const fromId = SNCF_STATIONS[from];
+  if (!fromId) return res.status(400).json({ error: "Ville de départ inconnue" });
+
+  try {
+    const places = await sncfGet(`/coverage/sncf/places?q=${encodeURIComponent(to)}&type[]=stop_area&count=1`);
+    const toId = places.places?.[0]?.id;
+    if (!toId) return res.status(404).json({ error: "Destination introuvable" });
+
+    const dt = nowDatetime();
+    const journeysData = await sncfGet(`/coverage/sncf/journeys?from=${encodeURIComponent(fromId)}&to=${encodeURIComponent(toId)}&datetime=${dt}&count=4`);
+
+    const journeys = (journeysData.journeys || []).map(j => {
+      const trainSection = j.sections?.find(s => s.type === "public_transport");
+      return {
+        departure: j.departure_date_time,
+        arrival: j.arrival_date_time,
+        duration: Math.round(j.duration / 60),
+        co2: j.co2_emission ? Math.round(j.co2_emission.value) / 1000 : null,
+        trainType: trainSection?.display_informations?.commercial_mode || null,
+        trainNumber: trainSection?.display_informations?.trip_short_name || null
+      };
+    });
+
+    res.json({ from, to, journeys });
+  } catch (err) {
+    console.error("Erreur SNCF API:", err.message);
+    res.status(500).json({ error: "Erreur lors de l'appel à l'API SNCF" });
   }
 });
 
